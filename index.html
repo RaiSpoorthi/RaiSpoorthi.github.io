@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spoorthi Rai Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: the page reads like an access record. A mono label rail on the left of each
+   section names the field, the content sits right. One bold move: the oversized name and the
+   live drift console. Everything else stays quiet. */
+:root{
+  --bg:#f3f5f9; --surface:#ffffff; --ink:#0e1a2e; --muted:#55627a; --line:#d5dbe6;
+  --accent:#2347e0; --accent-ink:#ffffff; --accent-soft:#e3e9ff;
+  --ok:#15803d; --low:#3f7d58; --med:#b7791f; --high:#c2410c; --crit:#b91c1c;
+  --console:#0e1a2e; --console-ink:#dbe4f5; --console-muted:#8a9ab8; --console-line:#26344d;
+  --display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0a1220; --surface:#111b2e; --ink:#e8eefa; --muted:#9aa8c2; --line:#25324a;
+    --accent:#8aa6ff; --accent-ink:#0a1220; --accent-soft:#1a2748;
+    --ok:#4ade80; --low:#6fcf97; --med:#f0b452; --high:#fb8c5a; --crit:#f87171;
+    --console:#060c17; --console-ink:#dbe4f5; --console-muted:#8a9ab8; --console-line:#1e2a41;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0a1220; --surface:#111b2e; --ink:#e8eefa; --muted:#9aa8c2; --line:#25324a;
+  --accent:#8aa6ff; --accent-ink:#0a1220; --accent-soft:#1a2748;
+  --ok:#4ade80; --low:#6fcf97; --med:#f0b452; --high:#fb8c5a; --crit:#f87171;
+  --console:#060c17; --console-ink:#dbe4f5; --console-muted:#8a9ab8; --console-line:#1e2a41;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.mono{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* nav */
+nav{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center;justify-content:space-between;padding:20px 0;border-bottom:1px solid var(--line)}
+nav .links{display:flex;flex-wrap:wrap;gap:6px 22px}
+nav a{font-family:var(--mono);font-size:.82rem;color:var(--ink);text-decoration:none}
+nav a:hover{color:var(--accent)}
+.brand{font-family:var(--display);font-weight:800;font-size:1.1rem;letter-spacing:-.01em}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr);gap:48px;align-items:end;padding:64px 0 56px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(3.6rem,11vw,8.4rem);line-height:.86;letter-spacing:-.045em;margin:14px 0 26px}
+h1 span{display:block}
+h1 .b{color:var(--accent)}
+.lede{font-size:1.2rem;max-width:34em;margin:0 0 28px;text-wrap:pretty}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.86rem;padding:12px 18px;border-radius:6px;border:1.5px solid var(--ink);color:var(--ink);text-decoration:none;background:transparent;cursor:pointer;transition:transform .15s,background .15s,color .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+.record{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.record header{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid var(--line)}
+.pill{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.74rem;padding:4px 10px;border-radius:99px;border:1px solid currentColor;color:var(--ok)}
+.pill i{width:7px;height:7px;border-radius:50%;background:currentColor;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+.record dl{margin:0;padding:6px 18px 12px}
+.record .row{display:grid;grid-template-columns:92px 1fr 18px;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line);align-items:baseline}
+.record .row:last-child{border-bottom:0}
+.record dt{font-family:var(--mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.record dd{margin:0;font-size:.95rem;font-weight:500}
+.tick{color:var(--ok);font-family:var(--mono);animation:tick .5s both}
+.row:nth-child(1) .tick{animation-delay:.3s}.row:nth-child(2) .tick{animation-delay:.55s}.row:nth-child(3) .tick{animation-delay:.8s}
+.row:nth-child(4) .tick{animation-delay:1.05s}.row:nth-child(5) .tick{animation-delay:1.3s}
+@keyframes tick{from{opacity:.15;transform:scale(.6)}to{opacity:1;transform:none}}
+
+/* numbers */
+.nums{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink)}
+.num{padding:22px 20px 20px 0;border-right:1px solid var(--line)}
+.num+.num{padding-left:20px}
+.num:last-child{border-right:0}
+.num b{display:block;font-family:var(--display);font-weight:700;font-size:clamp(2rem,4.4vw,3.1rem);line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.num span{display:block;margin-top:8px;font-size:.9rem;color:var(--muted);line-height:1.35}
+
+/* sections */
+section{display:grid;grid-template-columns:180px minmax(0,1fr);gap:32px;padding:64px 0;border-bottom:1px solid var(--line)}
+section>.mono{padding-top:10px}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,3.6vw,2.7rem);line-height:1.05;letter-spacing:-.03em;margin:0 0 28px;text-wrap:balance}
+h3{font-family:var(--display);font-weight:700;font-size:1.35rem;letter-spacing:-.015em;margin:0;line-height:1.2}
+
+.job{display:grid;gap:10px;padding:26px 0;border-top:1px solid var(--line)}
+.job:first-of-type{border-top:0;padding-top:0}
+.job .meta{display:flex;flex-wrap:wrap;gap:4px 16px;justify-content:space-between;align-items:baseline}
+.job .org{color:var(--accent);font-weight:600}
+.job ul{margin:6px 0 0;padding-left:1.1em;max-width:68ch}
+.job li{margin:6px 0}
+.job li::marker{color:var(--accent)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{font-family:var(--mono);font-size:.74rem;padding:4px 9px;border-radius:4px;background:var(--accent-soft);color:var(--ink)}
+
+/* drift console */
+.feature p{max-width:66ch;margin:0 0 14px}
+.console{margin-top:26px;background:var(--console);color:var(--console-ink);border-radius:10px;overflow:hidden;font-family:var(--mono);font-size:.84rem}
+.console .bar{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--console-line);color:var(--console-muted)}
+.console .body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}
+.scen{display:flex;flex-direction:column;border-right:1px solid var(--console-line)}
+.scen button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:10px;align-items:center;padding:11px 18px;border-bottom:1px solid var(--console-line);color:var(--console-ink);line-height:1.35}
+.scen button:last-child{border-bottom:0}
+.scen button:hover{background:#ffffff10}
+.scen button[aria-pressed="true"]{background:#ffffff18}
+.scen button:focus-visible{outline:2px solid #8aa6ff;outline-offset:-2px}
+.dot{flex:none;width:9px;height:9px;border-radius:2px}
+.sev-LOW{--s:#6fcf97}.sev-MEDIUM{--s:#f0b452}.sev-HIGH{--s:#fb8c5a}.sev-CRITICAL{--s:#f87171}
+.dot,.sevpill{background:var(--s)}
+.out{padding:18px;display:grid;gap:12px;align-content:start;min-height:250px}
+.out .k{color:var(--console-muted)}
+.out code{color:#b9c9ff;overflow-wrap:anywhere}
+.sevpill{display:inline-block;color:#0a1220;font-weight:500;padding:2px 10px;border-radius:4px}
+.out .fix{border-top:1px solid var(--console-line);padding-top:12px;color:#86efac}
+.console .foot{padding:10px 18px;border-top:1px solid var(--console-line);color:var(--console-muted);font-size:.76rem}
+.checks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}
+.check{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.check b{font-family:var(--display);font-size:1.7rem;line-height:1;display:block;font-variant-numeric:tabular-nums}
+.check span{font-size:.84rem;color:var(--muted)}
+
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:36px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px;display:grid;gap:10px;align-content:start}
+.card p{margin:0;font-size:.97rem}
+
+.skills{display:grid;gap:0}
+.sk{display:grid;grid-template-columns:170px minmax(0,1fr);gap:16px;padding:16px 0;border-top:1px solid var(--line)}
+.sk:first-child{border-top:0;padding-top:0}
+.sk h3{font-size:1.02rem;font-family:var(--body);font-weight:600;letter-spacing:0}
+.sk p{margin:0;color:var(--ink)}
+.sk.fam p{color:var(--muted)}
+
+.edu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
+.edu ul{margin:10px 0 0;padding:0;list-style:none}
+.edu li{padding:9px 0;border-top:1px solid var(--line)}
+.gpa{font-family:var(--display);font-weight:700;font-size:2.4rem;letter-spacing:-.03em;line-height:1;margin:12px 0 2px}
+
+.contact{border-bottom:0}
+.contact h2{font-size:clamp(2.4rem,6vw,4.4rem);margin-bottom:18px}
+.mail{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:22px 0}
+.mail code{font-family:var(--mono);font-size:1.02rem;padding:11px 16px;border:1.5px dashed var(--line);border-radius:6px;background:var(--surface);overflow-wrap:anywhere}
+footer{padding:26px 0 40px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;gap:32px;padding:44px 0}
+  section{grid-template-columns:1fr;gap:10px;padding:48px 0}
+  .nums{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .num:nth-child(2){border-right:0}
+  .num:nth-child(3){padding-left:0}
+  .num:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .console .body,.cards,.edu{grid-template-columns:1fr}
+  .scen{border-right:0;border-bottom:1px solid var(--console-line)}
+  .checks{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sk{grid-template-columns:1fr;gap:4px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav aria-label="Sections">
+  <span class="brand">Spoorthi Rai</span>
+  <div class="links">
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div>
+    <div class="mono">Identity &amp; access · Cloud security · Software</div>
+    <h1><span>Spoorthi</span><span class="b">Rai.</span></h1>
+    <p class="lede">I work where security meets engineering. I ran identity and access for 500+ users at Johnson Controls, and I now ship product code on a hospital platform at Prodoc AI. I like systems that grant the least access they can and prove it with tests.</p>
+    <div class="cta">
+      <a class="btn primary" href="#contact">Get in touch</a>
+      <a class="btn" href="https://github.com/RaiSpoorthi">GitHub</a>
+      <a class="btn" href="https://linkedin.com/in/spoorthi-rai">LinkedIn</a>
+    </div>
+  </div>
+
+  <aside class="record" aria-label="Profile summary">
+    <header><span class="mono">Access record</span><span class="pill"><i></i>Open to roles</span></header>
+    <dl>
+      <div class="row"><dt>Now</dt><dd>Tech Intern, Product Engineer at Prodoc AI</dd><span class="tick" aria-hidden="true">✓</span></div>
+      <div class="row"><dt>Before</dt><dd>Zero Trust &amp; IAM Intern, Johnson Controls India</dd><span class="tick" aria-hidden="true">✓</span></div>
+      <div class="row"><dt>Degree</dt><dd>B.E. CSE (Cyber Security), 2026, GPA 9.35</dd><span class="tick" aria-hidden="true">✓</span></div>
+      <div class="row"><dt>Seeking</dt><dd>IAM, cloud security and entry-level software roles</dd><span class="tick" aria-hidden="true">✓</span></div>
+      <div class="row"><dt>Where</dt><dd>Bengaluru or remote, 10-day notice</dd><span class="tick" aria-hidden="true">✓</span></div>
+    </dl>
+  </aside>
+</div>
+
+<div class="nums" aria-label="Key figures">
+  <div class="num"><b>500+</b><span>users whose access I administered across 15+ enterprise applications</span></div>
+  <div class="num"><b>300+</b><span>servers moved to Guardicore micro-segmentation enforcement</span></div>
+  <div class="num"><b>98%</b><span>SLA compliance on 70+ IAM tickets a month</span></div>
+  <div class="num"><b>52</b><span>automated tests behind my open-source drift detection project</span></div>
+</div>
+
+<section id="experience">
+  <div class="mono">Experience</div>
+  <div>
+    <h2>Two internships, one on each side of the security and engineering line.</h2>
+
+    <article class="job">
+      <div class="meta"><h3>Tech Intern, Product Engineer</h3><span class="mono">Oct 2026 to present</span></div>
+      <div class="org">Prodoc AI</div>
+      <ul>
+        <li>Resolve bugs and ship feature enhancements on a hospital OPD platform in JavaScript, TypeScript, React and Node.js, working from Jira tickets.</li>
+        <li>Submit changes through Git pull requests reviewed by senior engineers.</li>
+        <li>Maintain version-controlled Postman collections and API documentation.</li>
+        <li>Configure client environments in development, including provider credentials.</li>
+      </ul>
+      <div class="tags"><span class="tag">TypeScript</span><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">REST APIs</span><span class="tag">Postman</span><span class="tag">Git</span></div>
+    </article>
+
+    <article class="job">
+      <div class="meta"><h3>IT Intern, Zero Trust &amp; Identity and Access Management</h3><span class="mono">Jan 2026 to Jun 2026</span></div>
+      <div class="org">Johnson Controls India</div>
+      <ul>
+        <li>Administered identity and access management for 500+ users across 15+ enterprise applications, reducing access incidents by 25%.</li>
+        <li>Resolved 70+ monthly Cloud IAM and identity lifecycle tickets (SSO, MFA, Temporary Access Pass, credentials) in ServiceNow at 98% SLA compliance.</li>
+        <li>Managed Privileged Identity Management in Azure, access reviews and Segregation of Duties role governance using Saviynt.</li>
+        <li>Deployed Guardicore micro-segmentation across 300+ servers, moving policies from monitoring to enforcement and maintaining asset labels daily.</li>
+        <li>Ran daily Qualys VMDR vulnerability assessments and applied remediations under lead guidance.</li>
+        <li>Built Power BI SLA dashboards, automated SLA notifications with Power Automate, and scripted account recovery in PowerShell and Python.</li>
+      </ul>
+      <div class="tags"><span class="tag">Azure AD</span><span class="tag">PIM</span><span class="tag">Saviynt</span><span class="tag">Guardicore</span><span class="tag">Qualys VMDR</span><span class="tag">ServiceNow</span><span class="tag">PowerShell</span><span class="tag">Power BI</span></div>
+    </article>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="mono">Projects</div>
+  <div class="feature">
+    <h2>IaC Drift Guard</h2>
+    <p>Someone changes a cloud setting by hand in the console, and the infrastructure no longer matches the code that defines it. This pipeline detects that drift across 10 Terraform-managed AWS resources, rates how dangerous each change is, and restores the declared state. It runs against a local AWS emulator, so it costs nothing to run.</p>
+    <p><a href="https://github.com/RaiSpoorthi/iac-drift-guard">View the code on GitHub</a></p>
+
+    <div class="console" role="group" aria-label="Drift scenarios">
+      <div class="bar"><span>driftguard / scenarios</span><span>pick one to see how it is rated</span></div>
+      <div class="body">
+        <div class="scen" id="scen"></div>
+        <div class="out" id="out" aria-live="polite"></div>
+      </div>
+      <div class="foot">The 7 scenarios and severities shown here are the ones the project simulates.</div>
+    </div>
+
+    <div class="checks">
+      <div class="check"><b>7</b><span>drift scenarios, Low to Critical</span></div>
+      <div class="check"><b>5</b><span>OPA/Rego policy rules gate each deploy</span></div>
+      <div class="check"><b>37</b><span>Checkov checks passing</span></div>
+      <div class="check"><b>52</b><span>pytest tests run on every push</span></div>
+    </div>
+    <div class="tags" style="margin-top:16px"><span class="tag">Terraform</span><span class="tag">Python</span><span class="tag">OPA/Rego</span><span class="tag">Checkov</span><span class="tag">GitHub Actions</span><span class="tag">AWS</span><span class="tag">pytest</span></div>
+
+    <div class="cards">
+      <article class="card">
+        <span class="mono">Malware detection</span>
+        <h3>NexaSecure: Adaptive Antivirus Platform</h3>
+        <p>A five-layer malware detection platform combining ML classification, memory forensics and anomaly detection, reaching 94% accuracy. YARA rules work with Sysmon telemetry for real-time threat detection.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">TensorFlow</span><span class="tag">Scikit-learn</span><span class="tag">Volatility</span><span class="tag">YARA</span></div>
+      </article>
+      <article class="card">
+        <span class="mono">Web application security</span>
+        <h3>Website Vulnerability Scanner</h3>
+        <p>A Flask web application that automates scanning for SQL injection, XSS and misconfigurations across 10+ categories, cutting testing time by 30%.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">OWASP ZAP</span><span class="tag">Nmap</span><span class="tag">Burp Suite</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="mono">Skills</div>
+  <div>
+    <h2>What I have used at work and in projects.</h2>
+    <div class="skills">
+      <div class="sk"><h3>Security &amp; IAM</h3><p>Identity &amp; Access Management, Zero Trust, Azure AD, Active Directory, Privileged Identity Management, SSO/MFA, RBAC, access reviews, vulnerability management, network micro-segmentation, threat detection, penetration testing</p></div>
+      <div class="sk"><h3>Cloud &amp; DevOps</h3><p>Azure, AWS, Terraform, GitHub Actions, CI/CD, policy as code, Git</p></div>
+      <div class="sk"><h3>Languages</h3><p>Python, JavaScript, TypeScript, PowerShell, SQL, Java</p></div>
+      <div class="sk"><h3>Web &amp; APIs</h3><p>React, Node.js, REST APIs, Flask, Postman, API documentation</p></div>
+      <div class="sk"><h3>Tools</h3><p>Qualys VMDR, Guardicore, Saviynt, ServiceNow, OPA/Rego, Checkov, Burp Suite, OWASP ZAP, Nmap, Wireshark, Kali Linux, YARA, Sysmon, Volatility, Power BI, Power Automate, Jira, pytest</p></div>
+      <div class="sk fam"><h3>Familiar with</h3><p>From coursework and labs: SIEM, incident response, Linux, Bash, Docker, Kubernetes, TCP/IP networking</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="mono">Education</div>
+  <div class="edu">
+    <div>
+      <h3>B.E. Computer Science &amp; Engineering (Cyber Security)</h3>
+      <div class="gpa">9.35 / 10</div>
+      <div>Dayananda Sagar College of Engineering, Bengaluru</div>
+      <div class="mono" style="margin-top:6px">2022 to 2026</div>
+    </div>
+    <div>
+      <h3>Certifications and awards</h3>
+      <ul>
+        <li>Qualys Certified Specialist, VMDR</li>
+        <li>OCI 2025 Generative AI Professional</li>
+        <li>OCI 2025 Foundations Associate</li>
+        <li>Kali Linux for Ethical Hackers</li>
+        <li>Aventus Hackathon, Track Winner</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="mono">Contact</div>
+  <div>
+    <h2>Hiring for IAM, cloud security or software? Let's talk.</h2>
+    <p style="max-width:56ch;margin:0">I am based in Bengaluru, open to on-site, hybrid and remote roles, and can join within 10 days.</p>
+    <div class="mail">
+      <code id="email">rspoorthirai89@gmail.com</code>
+      <button class="btn" id="copy" type="button">Copy email</button>
+    </div>
+    <div class="cta">
+      <a class="btn primary" href="mailto:rspoorthirai89@gmail.com">Email me</a>
+      <a class="btn" href="https://linkedin.com/in/spoorthi-rai">LinkedIn</a>
+      <a class="btn" href="https://github.com/RaiSpoorthi">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="mono">Spoorthi Rai · Bengaluru, India</span>
+  <span class="mono">Security &amp; software engineering</span>
+</footer>
+</div>
+
+<script>
+const SCENARIOS=[
+ {t:"SSH opened to 0.0.0.0/0",r:"aws_security_group.app",s:"CRITICAL",w:"Anyone on the internet can reach the SSH port."},
+ {t:"S3 public access block switched off",r:"aws_s3_bucket_public_access_block.data",s:"CRITICAL",w:"The bucket can be made public again."},
+ {t:"IAM policy replaced with Action: \"*\"",r:"aws_iam_role_policy.app",s:"CRITICAL",w:"The role gains every permission, which breaks least privilege."},
+ {t:"Default KMS encryption deleted",r:"aws_s3_bucket_server_side_encryption_configuration.data",s:"HIGH",w:"The bucket loses its default KMS encryption setting."},
+ {t:"Bucket versioning suspended",r:"aws_s3_bucket_versioning.data",s:"MEDIUM",w:"Overwritten or deleted objects can no longer be recovered."},
+ {t:"DynamoDB point-in-time recovery disabled",r:"aws_dynamodb_table.audit",s:"MEDIUM",w:"The audit table loses its restore window."},
+ {t:"Owner tag overwritten",r:"aws_vpc.main",s:"LOW",w:"Ownership metadata is wrong, with no direct exposure."}
+];
+const scen=document.getElementById("scen"),out=document.getElementById("out");
+function show(i){
+  const x=SCENARIOS[i];
+  [...scen.children].forEach((b,j)=>b.setAttribute("aria-pressed",j===i?"true":"false"));
+  out.className="out sev-"+x.s;
+  out.innerHTML='<div><span class="k">drift detected in</span><br><code></code></div>'+
+    '<div><span class="k">change</span><br><span class="chg"></span></div>'+
+    '<div><span class="k">severity</span> <span class="sevpill"></span></div>'+
+    '<div class="why"></div><div class="fix">✓ remediated: Terraform re-applied, declared state restored</div>';
+  out.querySelector("code").textContent=x.r;
+  out.querySelector(".chg").textContent=x.t;
+  out.querySelector(".sevpill").textContent=x.s;
+  out.querySelector(".why").textContent=x.w;
+}
+SCENARIOS.forEach((x,i)=>{
+  const b=document.createElement("button");
+  b.type="button";b.className="sev-"+x.s;
+  b.innerHTML='<span class="dot"></span><span></span>';
+  b.lastChild.textContent=x.t;
+  b.addEventListener("click",()=>show(i));
+  scen.appendChild(b);
+});
+show(0);
+const copy=document.getElementById("copy");
+copy.addEventListener("click",async()=>{
+  try{await navigator.clipboard.writeText(document.getElementById("email").textContent);copy.textContent="Copied";}
+  catch(e){copy.textContent="Select the address to copy";}
+  setTimeout(()=>copy.textContent="Copy email",2000);
+});
+</script>
+</body>
+</html>
